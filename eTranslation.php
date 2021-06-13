@@ -104,6 +104,7 @@ try {
         require_once( trailingslashit(ETRANSLATION_PATH) . 'includes/etranslation-plugin-install.php');
         require_once( trailingslashit( ETRANSLATION_PATH ) . 'admin/etranslation-admin-hooks.php' );
         require_once( trailingslashit( ETRANSLATION_PATH ) . 'admin/etranslation-metabox.class.php' );
+        require_once( trailingslashit( ETRANSLATION_PATH ) . 'admin/etranslation-api.class.php' );
 
         require_once( trailingslashit( ETRANSLATION_PATH ) . 'settings/wp-settings-api.class.php' );
  		require_once( trailingslashit( ETRANSLATION_PATH ) . 'settings/wp-settings.class.php' );
