@@ -2,7 +2,6 @@
 
 class eTranslation_Metabox {
 	protected $metabox_config = array();
-	protected $tblname = 'etranslation_jobs';
 	protected $separator = '<hr class="BREAKLINE#$123" />';	
 
 	function __construct() {
@@ -78,7 +77,7 @@ class eTranslation_Metabox {
 		));
 	
 		$response = curl_exec($client);
-		$wp_track_table = $wpdb->prefix . $this->tblname;
+		$wp_track_table = $wpdb->prefix . ETRANSLATION_TABLE;
 		$wpdb->insert( 
 			$wp_track_table, 
 			array( 
@@ -95,7 +94,7 @@ class eTranslation_Metabox {
 	function action_etranslation_translate_status() {
 		global $wpdb;
 		$id = $_POST['id'];
-		$wp_track_table = $wpdb->prefix . $this->tblname;
+		$wp_track_table = $wpdb->prefix . ETRANSLATION_TABLE;
 		$row = $wpdb->get_row( "SELECT * FROM $wp_track_table WHERE id = '$id'" );
 		$translation = null;
 		$decoded = base64_decode($row->body);
@@ -123,25 +122,6 @@ class eTranslation_Metabox {
 			"body" => $decoded
 		);
 		wp_send_json_success($returnData);
-	}
-
-	function create_plugin_database_table()
-	{
-		global $wpdb;
-		$wp_track_table = $wpdb->prefix . $this->tblname;
-
-		#Check to see if the table exists already, if not, then create it
-		if($wpdb->get_var( "show tables like '$wp_track_table'" ) != $wp_track_table) 
-		{
-			$sql = "CREATE TABLE `". $wp_track_table . "` ( ";
-			$sql .= "  `id`  VARCHAR(13) NOT NULL, ";
-			$sql .= "  `status`  ENUM('TRANSLATING','DONE','ERROR') NOT NULL DEFAULT 'TRANSLATING', ";
-			$sql .= "  `body`  TEXT NULL DEFAULT NULL, ";
-			$sql .= "  PRIMARY KEY (`id`) "; 
-			$sql .= ") COLLATE='utf8mb4_unicode_520_ci'; ";
-			require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
-			$result = dbDelta($sql);
-		}
 	}
 
 	public function add_meta_box() {

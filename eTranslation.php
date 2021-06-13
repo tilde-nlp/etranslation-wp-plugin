@@ -67,6 +67,7 @@ if (!function_exists('is_admin') || !is_admin()) {
 }
 
 defined('ETRANSLATION_PATH') or define('ETRANSLATION_PATH', realpath(__DIR__));
+defined('ETRANSLATION_TABLE') or define('ETRANSLATION_TABLE', 'etranslation_jobs');
 defined('ETRANSLATION_URL') or define('ETRANSLATION_URL', plugins_url('', __FILE__));
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'), false);
 defined('ETRANSLATION_VERSION') or define('ETRANSLATION_VERSION', $plugin_data['Version']);
@@ -125,13 +126,8 @@ function etranslation_action_links( $links ) {
     return $links;
 }
 
-register_activation_hook(__FILE__, 'etranslation_plugin_activate');
-function etranslation_plugin_activate() {
-	etranslation_install_plugin();
-}
-
-register_deactivation_hook(__FILE__, 'etranslation_plugin_deactivate');
-function etranslation_plugin_deactivate() {}
+register_activation_hook(__FILE__, 'etranslation_install_plugin');
+register_uninstall_hook(__FILE__, 'etranslation_uninstall_plugin');
 
 add_action( 'init', 'etranslation_init' );
 function etranslation_init() {
