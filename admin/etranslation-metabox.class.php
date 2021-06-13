@@ -18,8 +18,6 @@ class eTranslation_Metabox {
 		$password = trim(get_option('etranslation_password'));
 		$application = trim(get_option('etranslation_application'));
 		$institution = trim(get_option('etranslation_institution'));
-		global $wpdb;
-		$this->create_plugin_database_table();
 		$strings = $_POST['to_translate'];
 		$source_lang = $_POST['source_lang'];
 		$target_lang = $_POST['target_lang'];
@@ -77,6 +75,7 @@ class eTranslation_Metabox {
 		));
 	
 		$response = curl_exec($client);
+		global $wpdb;
 		$wp_track_table = $wpdb->prefix . ETRANSLATION_TABLE;
 		$wpdb->insert( 
 			$wp_track_table, 
