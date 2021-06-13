@@ -373,7 +373,7 @@ class WP_Settings {
 						$action( $param );
 					}
 					else {
-						printf( __( 'Attention, fonction non définie %s' ), $action );
+						printf( __( 'Attention, function is not defined %s', 'etranslation' ), $action );
 					}
 				}
 			}

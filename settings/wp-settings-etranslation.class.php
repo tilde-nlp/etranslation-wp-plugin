@@ -66,7 +66,7 @@ class WP_Settings_eTranslation extends WP_Settings\WP_Settings {
 					'title'			=> __( 'Institution', 'etranslation' ),
 					'type'			=> 'text',
 					'css'			=> 'width: 20em;',
-					'description'	=> __( 'Please enter institution', 'etranslation' )
+					'description'	=> __('Please enter institution<br /><br />To get started, contact the <a title="machine translation service desk" href="mailto:help@cefat-tools-services.eu" rel="noopener noreferrer">machine translation service desk</a>', 'etranslation')
 				),
 			)
 		);
