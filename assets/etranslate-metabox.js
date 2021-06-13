@@ -1,4 +1,3 @@
-// 210506 temp fix
 function unEscapeHTMLTags( string ) {
 	 var map = {
 	    '&lt;' : '<',
@@ -90,10 +89,8 @@ function checkStatus(id) {
 	}, 1000);
 }
 
-/* version 1.5.2.8 - 20201020 */
 jQuery(document).ready(function() {
 	if( jQuery('select[name="post_lang_choice"]').length ) {
-		// polylang : langue cible = langue courante de polylang
 		var current_language = jQuery('select[name="post_lang_choice"]').find(':selected').attr('lang');
 		current_language = current_language.replace('-', '_');
 		jQuery('select#etranslate_target_lang option[value="' + current_language + '"]').prop('selected', true );
@@ -112,13 +109,10 @@ jQuery( "#etranslate_translate" ).on( "click", function() {
 
 	jQuery( '#etranslate_spinner' ).css( 'visibility', 'visible' );
 
-	var should_we_replace = jQuery( 'input[name="etranslate_replace"]:checked' ).val();
 	var target_lang = jQuery( '#etranslate_target_lang' ).val();
 	var text_bits = {};
 
 	if(is_gutenberg) {
-
-
 		const { select } = wp.data;		
 		text_bits['post_title'] = select("core/editor").getEditedPostAttribute( 'title' );
 		text_bits['post_excerpt'] = select("core/editor").getEditedPostAttribute( 'excerpt' );
@@ -142,15 +136,6 @@ jQuery( "#etranslate_translate" ).on( "click", function() {
 		}
 
 		text_bits['post_content'] = jQuery( '#content.wp-editor-area' ).val();
-	}
-
-	if(eTranslateStrings.extended_fields) {
-		var fields = eTranslateStrings.extended_fields.split(',');
-		fields.forEach(function(field) {
-			var value = jQuery('*[name="acf[' + field + ']"]').val();
-			console.log(field);			console.log(value);
-			text_bits['acf_' + field] = value;
-		});
 	}
 
 	var data = {

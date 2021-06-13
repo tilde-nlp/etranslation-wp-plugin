@@ -16,15 +16,10 @@ class WP_Settings {
 	public $post_type = false;
 
 	public function __construct() {
-		// Register settings
-
 		add_action( 'admin_init', array( $this, 'loadSettings' ) );
 		add_action( 'admin_init', array( $this, 'registerSettings' ) );
-
 		$this->plugins_paths = apply_filters( 'settings_etranslate_paths', array() );
 		
-		// Add link to menu
-
 		global $wp_filter;
 		$real_order = $this->menu_order;
 		while( isset( $wp_filter['admin_menu']->callbacks[$real_order] ) ) {
@@ -62,11 +57,6 @@ class WP_Settings {
 
 			add_action( 'admin_notices', array( $this, 'print_saved_notice' ) );
 		}
-
-		add_action( 'admin_notices', array( $this, 'maybe_print_notices' ) );
-
-
-		$this->defaultActions['prune_logs'] =array( $this, 'pruneLogs' );
 	}
 
 	function getPluginID() {
@@ -96,12 +86,9 @@ class WP_Settings {
 		$this->WC_Settings_API->process_admin_options();
 	}
 
-	function maybe_print_notices() {
-	}
-
 	function print_saved_notice() {
 		?>
-		<div id="message" class="updated notice is-dismissible"><p><strong><?php _e( 'Settings saved.' ); ?></strong></p></div>
+		<div id="message" class="updated notice is-dismissible"><p><strong><?php _e( 'Settings saved.', 'etranslation' ); ?></strong></p></div>
 		<?php
 	}
 
@@ -109,12 +96,6 @@ class WP_Settings {
 		$this->settingsStructure = $this->getSettingsStructure();
 	}
 
-	/**
-	 * Add Settings link to menu
-	 *
-	 * @access public
-	 * @return voidaddToMenu
-	 */
 	public function addToMenu() {
 		add_submenu_page(
 			$this->parent_menu,
@@ -126,12 +107,6 @@ class WP_Settings {
 		);
 	}
 
-	/**
-	 * Print settings page
-	 *
-	 * @access public
-	 * @return void
-	 */
 	public function settingsPage() {
 		// Get current tab
 		$current_tab = ( isset( $_GET['tab'] ) ) ? $_GET['tab'] : $this->defaultSettingsTab;
@@ -156,7 +131,7 @@ class WP_Settings {
 					$function();
 				}
 				else {
-					printf( __( 'Attention, fonction non définie %s' ), $function );
+					printf( __( 'Attention, function is not defined %s', 'etranslation' ), $function );
 				}	
 			} 
 		}
@@ -175,7 +150,7 @@ class WP_Settings {
 			register_setting(
 				$this->option_page .'_group_' . $tab_key,
 				$this->option_page,
-				array( $this, 'validateSettings' )
+				true
 			);
 
 			// Iterate over sections
@@ -210,10 +185,6 @@ class WP_Settings {
 		}
 	}
 
-	function validateSettings() {
-		return true;
-	}
-
 	function getActiveTab() {
 		if( isset( $_GET[ 'tab' ] ) ) {
 			$active_tab = $_GET[ 'tab' ];
@@ -233,7 +204,6 @@ class WP_Settings {
 		foreach( $this->settingsStructure as $setting_tab_slug => $setting_data ) {
 			$tabs[$setting_tab_slug] = $setting_data['title'];
 		}
-		//echo '<div class="wrap woocommerce"><form method="post" action="options.php" enctype="multipart/form-data">';
 		?>
 
 			<div class="wrap">
@@ -425,98 +395,5 @@ class WP_Settings {
 	</div>
 	<?php
 	}
-
-
-	public function showServerInfo() {
-		echo '<h2>' . __('Informations serveur', $this->plugin_text_domain ) . '</h2>';
-
-		$ini_values = ini_get_all();
-
-		$bytes = memory_get_usage();
-		$s = array('o', 'Ko', 'Mo', 'Go', 'To', 'Po');
-	    $e = floor(log($bytes)/log(1024));
-	    $memory_usage = sprintf('%.2f '.$s[$e], ($bytes/pow(1024, floor($e))));
-	  
-
-	    $timeout = $ini_values['max_execution_time']['local_value'];
-	    if($timeout > 1000 ) {
-	    	$timeout = round($timeout /1000,1);
-	    }
-
-		$informations = array(
-			'Real path'		=> get_home_path(),
-			'PHP version'	=> phpversion(),
-			'Timeout'		=> $timeout .' s',
-			'Memory usage'	=> $memory_usage,
-		);
-
-		if( function_exists( 'sys_getloadavg') && is_array(sys_getloadavg() ) ) {
-			$informations['Load'] = implode(', ', sys_getloadavg() );
-		}
-
-		foreach($informations as $label => $value) {
-			echo '<p><strong>' . $label . '</strong> ' . $value .'</p>';
-		}
-
-
-	}
-
-	function pruneLogs() {
-		if( !current_user_can( 'manage_options' ) ) {
-			return false;
-		}
-
-		$currentPlugin = $this->getCurrentPluginPage();
-		$path = $this->plugins_paths[$currentPlugin]['files'];
-		
-		$logs = glob( trailingslashit( $path ) . '*.log');
-
-		if($logs) foreach($logs as $log_file) {
-			$file_name = basename( $log_file );
-			if(preg_match('#(\d+)-(\d+)-(\w+)\.log#', $file_name, $match)) {
-				$date = $match[2] . '/' . $match[1];
-				$log_time = mktime(0, 0, 0, $match[2], 1, $match[1] );
-
-				$first_day_of_the_month = new \DateTime('first day of this month');
-				$first_day_of_the_month->modify('- 1 day');
-		 		$first_day_time = $first_day_of_the_month->getTimestamp();
-
-		 		if( $log_time < $first_day_time ) {
-		 			unlink( $log_file );
-		 		}
-			}
-			echo "<br />\n" . sprintf( __('Log file %s deleted', 'etranslate' ), basename( $file_name ) );
-		}
-		echo "<br />\n";
-	}
-
-	public function showLogs() {
-		
-		if( !is_admin() ) {
-			return false;
-		}
-
-		$currentPlugin = $this->getCurrentPluginPage();
-		$path = $this->plugins_paths[$currentPlugin]['files'];
-		
-		$logs = glob( trailingslashit( $path ) . '*.log');
-		if($logs) foreach($logs as $log_file) {
-			$file_name = basename( $log_file );
-			$contents = file_get_contents( $log_file );
-			if(preg_match('#(\d+)-(\d+)-(\w+)\.log#', $file_name, $match)) {
-				$date = $match[2] . '/' . $match[1];
-				echo '<h3>';
-				printf( 
-					__("Fichier '%s' pour %s" ),
-					$match[3],
-					$date
-				);
-				echo '</h3>';
-				plouf($contents);
-
-			}
-		}
-
-	}	
 }
 }

@@ -160,9 +160,9 @@ class eTranslate_Metabox {
 		$html = '';
 		$html = '
 		<form id="etranslate_admin_translation" name="etranslate_admin_translation" method="POST">';
-		$html .= etranslate_language_selector( 'source', 'etranslate_source_lang', false );
+		$html .= $this->etranslate_language_selector( 'source', 'etranslate_source_lang', false );
 		$html .= '<br />' . __( 'Translating to', 'etranslate' ) . '<br /> ';
-		$html .= etranslate_language_selector( 'target', 'etranslate_target_lang', get_option( 'etranslate_default_locale' ) );
+		$html .= $this->etranslate_language_selector( 'target', 'etranslate_target_lang', get_option( 'etranslate_default_locale' ) );
 		$html .= '
 			<span id="etranslate_error" class="error" style="display: none;"></span>
 			<span id="etranslate_spinner" class="spinner"></span>
@@ -172,33 +172,8 @@ class eTranslate_Metabox {
 		$html .= '<br />
 			<input style="margin-top: 16px;" id="etranslate_translate" name="etranslate_translate" type="button" class="button button-primary button-large" value="' . __( 'Translate' , 'etranslate' ) . '"></span>';
 
-		$default_behaviour = eTranslateConfiguration::getMetaBoxDefaultBehaviour();
-		$default_metabox_behaviours = eTranslateConfiguration::DefaultsMetaboxBehaviours();
-
-		if( !eTranslateConfiguration::usingMultilingualPlugins() ) {
-			$default_behaviour = 'replace';
-		}
-		if( !$default_behaviour ) {
-			$default_behaviour = 'replace';
-		}
 		$html .= '
 			<hr />';
-		foreach( $default_metabox_behaviours as $value => $label ) {
-			$html.= '
-			<span style="visibility: hidden;">
-				<input type="radio" name="etranslate_replace" value="'. $value .'"';
-
-			if( $value == $default_behaviour ) {
-				$html .= ' checked="checked"';
-			}
-			if( $value == 'append' && !eTranslateConfiguration::usingMultilingualPlugins() ) {
-				$html .= ' disabled="disabled"';
-			}
-			$html .= '>
-				<label for="etranslate_replace">' . $label . '</label>
-			</span>';
-		}
-
 
 		$html .= '
 		</form>
@@ -207,5 +182,62 @@ class eTranslate_Metabox {
 		$html = apply_filters( 'etranslate_metabox_html', $html);
 
 		echo $html;
+	}
+
+	protected function etranslate_language_selector($type = 'target', $id = 'etranslate_language_selector', $selected = false) {
+		$html = '';
+		$html .= "\n" . '<select style="margin-top: 8px; margin-bottom: 8px;" id="' . $id . '" name="' . $id . '">';
+	
+		$EU_OFFICIAL_LANGS = array(
+			"bg" => "Bulgarian",
+			"hr" => "Croatian",
+			"cs" => "Czech",
+			"da" => "Danish",
+			"nl" => "Dutch",
+			"en" => "English",
+			"et" => "Estonian",
+			"fi" => "Finnish",
+			"fr" => "French",
+			"de" => "German",
+			"el" => "Greek",
+			"hu" => "Hungarian",
+			"ga" => "Irish",
+			"it" => "Italian",
+			"lv" => "Latvian",
+			"lt" => "Lithuanian",
+			"mt" => "Maltese",
+			"pl" => "Polish",
+			"pt" => "Portuguese",
+			"ro" => "Romanian",
+			"sk" => "Slovak",
+			"sl" => "Slovene",
+			"es" => "Spanish",
+			"sv" => "Swedish",
+			# unoficial but supported languages
+			"is" => "Islandic",
+			"nb" => "Norwegian (Bokmål)",
+			# non-European languages
+			"ru" => "Russian",
+			"zh" => "Chinese",
+			"ja" => "Japanese",
+			"ar" => "Arabic"
+		);
+	
+		foreach( $EU_OFFICIAL_LANGS as $lang_id => $label ) {
+			$html .= '
+			<option value="' . $lang_id .'"';
+	
+			if ($type == 'source' && $lang_id == 'en') {
+				$html .= ' selected="selected"';
+			}
+			if ($type == 'target' && $lang_id == 'de') {
+				$html .= ' selected="selected"';
+			}
+			$html .= '>' . $label. '</option>';
+		}
+	
+		$html .="\n</select>";
+	
+		return $html;
 	}
 }

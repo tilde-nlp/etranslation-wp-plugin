@@ -8,6 +8,8 @@
  * Author URI: https://github.com/YourLittleHelper
  */
 
+
+ // Register callback methods for eTranslation
 add_action( 'rest_api_init', 'register_callback');
 
 function register_callback () {
@@ -33,6 +35,8 @@ function register_callback () {
 function translation_error_callback( WP_REST_Request $request ) {
 	$response = new WP_REST_Response("");
 	$response->set_status(200);
+
+	// TODO: Write error code to database
 
 	return $response;
 }
@@ -62,47 +66,34 @@ if (!function_exists('is_admin') || !is_admin()) {
     return;
 }
 
-defined('ETRANLATE_PATH') or define('ETRANLATE_PATH', realpath(__DIR__));
-defined( 'ETRANSLATE_URL' ) 		or define( 'ETRANSLATE_URL', 		plugins_url( '', __FILE__ ) );
-defined( 'ETRANSLATE_PATH' ) 		or define( 'ETRANSLATE_PATH', 		realpath( __DIR__ ) ); // our directory.
-$plugin_data = get_file_data( __FILE__, array( 'Version' => 'Version' ), false );
-defined( 'ETRANSLATE_VERSION' ) 	or define( 'ETRANSLATE_VERSION', $plugin_data['Version'] );
+defined('ETRANSLATE_PATH') or define('ETRANSLATE_PATH', realpath(__DIR__));
+defined('ETRANSLATE_URL') or define('ETRANSLATE_URL', plugins_url('', __FILE__));
+$plugin_data = get_file_data(__FILE__, array('Version' => 'Version'), false);
+defined('ETRANSLATE_VERSION') or define('ETRANSLATE_VERSION', $plugin_data['Version']);
 $wp_upload_dir = wp_upload_dir();
 defined('ETRANSLATE_FILES')	or define('ETRANSLATE_FILES', trailingslashit($wp_upload_dir['basedir']) . 'etranslate');
 if (!is_dir(ETRANSLATE_FILES)) {
     mkdir(ETRANSLATE_FILES);
 }
 
-function settings_etranslate_paths( $paths = array() ) {
+function settings_etranslate_paths($paths = array()) {
 	$paths['etranslation_settings'] = array(
 		'files'	=> ETRANSLATE_FILES
 	);
 	return $paths;
 }
 
-if( !function_exists( 'plouf' ) ) {
-	function plouf( $e, $txt = '' ) {
-		if( $txt != '' ) echo "<br />\n$txt";
-		echo '<pre>';
-		print_r( $e );
-		echo '</pre>';
-	}
-}
-
 try {
 	if (is_admin()) {
-        require_once( trailingslashit( ETRANLATE_PATH ) . 'etranslate-configuration.class.php' );
+        require_once( trailingslashit( ETRANSLATE_PATH ) . 'etranslate-configuration.class.php' );
 
-        require_once( trailingslashit(ETRANLATE_PATH) . 'includes/etranslate-plugin-install.php');
+        require_once( trailingslashit(ETRANSLATE_PATH) . 'includes/etranslate-plugin-install.php');
         require_once( trailingslashit( ETRANSLATE_PATH ) . 'admin/etranslate-admin-hooks.php' );
-        require_once( trailingslashit( ETRANSLATE_PATH ) . 'admin/etranslate-admin-functions.php' );
         require_once( trailingslashit( ETRANSLATE_PATH ) . 'admin/etranslate-metabox.class.php' );
 
         require_once( trailingslashit( ETRANSLATE_PATH ) . 'settings/wp-settings-api.class.php' );
  		require_once( trailingslashit( ETRANSLATE_PATH ) . 'settings/wp-settings.class.php' );
  		require_once( trailingslashit( ETRANSLATE_PATH ) . 'settings/wp-settings-etranslate.class.php' );
-
-		require_once( trailingslashit( ETRANSLATE_PATH ) . 'client/etranslate-data.class.php' );
 
 		add_filter('settings_plugins_paths', 'settings_etranslate_paths'); 
 	}
@@ -122,6 +113,7 @@ function etranslate_is_plugin_fully_configured() {
 	return true;
 }
 
+// Register settings link
 add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'etranslate_action_links' );
 function etranslate_action_links( $links ) {
     $links = array_merge( 
@@ -140,7 +132,6 @@ function etranslate_plugin_activate() {
 
 register_deactivation_hook(__FILE__, 'etranslate_plugin_deactivate');
 function etranslate_plugin_deactivate() {}
-
 
 add_action( 'init', 'etranslate_init' );
 function etranslate_init() {
