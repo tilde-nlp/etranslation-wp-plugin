@@ -13,7 +13,7 @@
 add_action( 'rest_api_init', 'register_callback');
 
 function register_callback () {
-	register_rest_route( 'etranslation/v1', 'error_callback', array(
+	register_rest_route( 'etranslation/v1', 'error_callback/(?P<id>[a-zA-Z0-9._-]+)', array(
 	  'methods' => array( 'GET', 'POST' ),
 	  'callback' => 'translation_error_callback',
 	  'args' => array(),
@@ -33,10 +33,23 @@ function register_callback () {
   }
 
 function translation_error_callback( WP_REST_Request $request ) {
+	global $wpdb;
+	$id = $request['id'];
+	$error_message = $request->get_param('error-message');
+	$body = $request->get_body();
+	
+	$wp_track_table = $wpdb->prefix . 'etranslation_jobs';
+	$wpdb->update( 
+		$wp_track_table, 
+		array( 
+			'status' => 'ERROR',
+			'body' => $error_message
+		),
+		array( 'id' => $id )
+	);
+
 	$response = new WP_REST_Response("");
 	$response->set_status(200);
-
-	// TODO: Write error code to database
 
 	return $response;
 }

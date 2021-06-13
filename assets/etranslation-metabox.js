@@ -1,3 +1,10 @@
+function showError(message) {
+	jQuery( '#etranslation_spinner' ).css( 'visibility', 'hidden' );
+	jQuery('#etranslation_error_message').html(message);
+	jQuery('#etranslation_error_message').css('display', 'block');
+	jQuery('#etranslation_error_message').css('color', 'red');
+}
+
 function unEscapeHTMLTags( string ) {
 	 var map = {
 	    '&lt;' : '<',
@@ -77,6 +84,10 @@ function checkStatus(id) {
 			id: id
 			};
 		jQuery.post( ajaxurl, statusData, function( response ) {
+			if( !response.success ) {
+				showError(response.data);
+				return;
+			}
 			if (response.data.status == 'TRANSLATING') {
 				checkStatus(id);
 				return;
@@ -148,11 +159,8 @@ jQuery( "#etranslation_translate" ).on( "click", function() {
 	 	};
 
 	 jQuery.post( ajaxurl, data, function( responses ) {
-		  if( !responses.success ) {
-			jQuery( '#etranslation_spinner' ).css( 'visibility', 'hidden' );
-			jQuery('#etranslation_error_message').html( responses.data );
-			jQuery('#etranslation_error_message').css('display', 'block');
-			jQuery('#etranslation_error_message').css('color', 'red');
+		if( !responses.success ) {
+			showError(responses.data);
 		}
 		else {
 			checkStatus(responses.data.id);

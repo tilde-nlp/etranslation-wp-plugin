@@ -98,16 +98,16 @@ class eTranslation_Metabox {
 		);
 
 		$id = uniqid();
-		$error_callback = get_rest_url() . 'etranslation/v1/error_callback';
+		$error_callback = get_rest_url() . 'etranslation/v1/error_callback/' . $id;
 		$destination = get_rest_url() . 'etranslation/v1/destination/' . $id;
  
-    $caller_information = array(
+    	$caller_information = array(
             'application' => $application,
 			'username' => $username,
 			'institution' => $institution
         );
  
-    $translationRequest= array(
+    	$translationRequest= array(
 			"documentToTranslateBase64" => $base64ToTranslate,
             'sourceLanguage' => $source_lang,
             'targetLanguages' => array(
@@ -163,9 +163,25 @@ class eTranslation_Metabox {
 		$id = $_POST['id'];
 		$wp_track_table = $wpdb->prefix . ETRANSLATION_TABLE;
 		$row = $wpdb->get_row( "SELECT * FROM $wp_track_table WHERE id = '$id'" );
+		
+		if ($row->status == 'ERROR') {
+			$error_message = $row->body;
+			$wpdb->delete(
+				$wp_track_table,
+				array(
+					'id' => $id
+				),
+				array(
+					'%s'
+				)
+			);
+			wp_send_json_error($error_message);
+			return;
+		}
+
 		$translation = null;
-		$decoded = base64_decode($row->body);
 		if ($row->status == 'DONE') {
+			$decoded = base64_decode($row->body);
 			$rawTranslations = explode($this->separator, $decoded);
 			$translation = array(
 				'post_title' => $rawTranslations[0],
@@ -184,9 +200,7 @@ class eTranslation_Metabox {
 		}
 		$returnData = array(
 			"status" => $row->status,
-			"translation" => $translation,
-			"external_reference" => $row->external_reference,
-			"body" => $decoded
+			"translation" => $translation
 		);
 		wp_send_json_success($returnData);
 	}
