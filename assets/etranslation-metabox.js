@@ -5,6 +5,11 @@ function showError(message) {
 	jQuery('#etranslation_error_message').css('color', 'red');
 }
 
+function hideError() {
+	jQuery('#etranslation_error_message').html('');
+	jQuery('#etranslation_error_message').css('display', 'hidden');
+}
+
 function unEscapeHTMLTags( string ) {
 	 var map = {
 	    '&lt;' : '<',
@@ -108,7 +113,7 @@ jQuery(document).ready(function() {
 	}
 
 jQuery( "#etranslation_translate" ).on( "click", function() {
-
+	hideError();
 	var is_gutenberg = jQuery('.wp-block').length;
 	var is_classic_editor = jQuery('.wp-editor-area').length;
 
@@ -158,14 +163,16 @@ jQuery( "#etranslation_translate" ).on( "click", function() {
 	 	nonce: jQuery( '#etranslation_nonce' ).val(),
 	 	};
 
-	 jQuery.post( ajaxurl, data, function( responses ) {
-		if( !responses.success ) {
-			showError(responses.data);
-		}
-		else {
-			checkStatus(responses.data.id);
-		}
-	 });
+		 jQuery.post( ajaxurl, data, function( response ) {
+			if( !response.success ) {
+			  showError(response.data);
+		  }
+		  else {
+			  checkStatus(response.data.id);
+		  }
+	   }).fail(function() {
+		   showError('Unexpected error, please try again.');
+	   });
 	 });
 
 });
