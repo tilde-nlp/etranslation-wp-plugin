@@ -149,8 +149,10 @@ jQuery( "#etranslation_translate" ).on( "click", function() {
 
 	 jQuery.post( ajaxurl, data, function( responses ) {
 		  if( !responses.success ) {
-			jQuery('#deepl_metabox #deepl_error').html( responses.data[0] );
-			jQuery('#deepl_metabox #deepl_error').css('display', 'block');
+			jQuery( '#etranslation_spinner' ).css( 'visibility', 'hidden' );
+			jQuery('#etranslation_error_message').html( responses.data );
+			jQuery('#etranslation_error_message').css('display', 'block');
+			jQuery('#etranslation_error_message').css('color', 'red');
 		}
 		else {
 			checkStatus(responses.data.id);
