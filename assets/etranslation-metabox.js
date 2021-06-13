@@ -66,13 +66,13 @@ function replace_translations(translations) {
 			console.log( "No action for " + index );
 		}
 	} );
-	jQuery( '#etranslate_spinner' ).css( 'visibility', 'hidden' );
+	jQuery( '#etranslation_spinner' ).css( 'visibility', 'hidden' );
 }
 
 function checkStatus(id) {
 	setTimeout(function () {
 		var statusData = {
-			action: 'etranslate_translate_status',
+			action: 'etranslation_translate_status',
 			post_id: jQuery( 'input[name="post_ID"]' ).val(),
 			id: id
 			};
@@ -93,10 +93,10 @@ jQuery(document).ready(function() {
 	if( jQuery('select[name="post_lang_choice"]').length ) {
 		var current_language = jQuery('select[name="post_lang_choice"]').find(':selected').attr('lang');
 		current_language = current_language.replace('-', '_');
-		jQuery('select#etranslate_target_lang option[value="' + current_language + '"]').prop('selected', true );
+		jQuery('select#etranslation_target_lang option[value="' + current_language + '"]').prop('selected', true );
 	}
 
-jQuery( "#etranslate_translate" ).on( "click", function() {
+jQuery( "#etranslation_translate" ).on( "click", function() {
 
 	var is_gutenberg = jQuery('.wp-block').length;
 	var is_classic_editor = jQuery('.wp-editor-area').length;
@@ -107,9 +107,9 @@ jQuery( "#etranslate_translate" ).on( "click", function() {
 	}
 	if(is_classic_editor) console.log(" classic editor plugin");
 
-	jQuery( '#etranslate_spinner' ).css( 'visibility', 'visible' );
+	jQuery( '#etranslation_spinner' ).css( 'visibility', 'visible' );
 
-	var target_lang = jQuery( '#etranslate_target_lang' ).val();
+	var target_lang = jQuery( '#etranslation_target_lang' ).val();
 	var text_bits = {};
 
 	if(is_gutenberg) {
@@ -139,12 +139,12 @@ jQuery( "#etranslate_translate" ).on( "click", function() {
 	}
 
 	var data = {
-	 	action: 'etranslate_translate',
+	 	action: 'etranslation_translate',
 	 	post_id: jQuery( 'input[name="post_ID"]' ).val(),
 	 	to_translate: text_bits,
-	 	source_lang: jQuery( '#etranslate_source_lang' ).val(),
+	 	source_lang: jQuery( '#etranslation_source_lang' ).val(),
 	 	target_lang: target_lang,
-	 	nonce: jQuery( '#etranslate_nonce' ).val(),
+	 	nonce: jQuery( '#etranslation_nonce' ).val(),
 	 	};
 
 	 jQuery.post( ajaxurl, data, function( responses ) {

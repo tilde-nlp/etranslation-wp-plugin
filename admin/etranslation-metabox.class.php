@@ -1,8 +1,8 @@
 <?php
 
-class eTranslate_Metabox {
+class eTranslation_Metabox {
 	protected $metabox_config = array();
-	protected $tblname = 'etranslate_jobs';
+	protected $tblname = 'etranslation_jobs';
 	protected $separator = '<hr class="BREAKLINE#$123" />';	
 
 	function __construct() {
@@ -10,15 +10,15 @@ class eTranslate_Metabox {
 		add_action( 'add_meta_boxes', array( &$this, 'add_meta_box' ) );
 
 		// adding the ajax hook
-		add_action( 'wp_ajax_etranslate_translate', array( &$this, 'action_etranslate_translate' ) );
-		add_action( 'wp_ajax_etranslate_translate_status', array( &$this, 'action_etranslate_translate_status' ) );
+		add_action( 'wp_ajax_etranslation_translate', array( &$this, 'action_etranslation_translate' ) );
+		add_action( 'wp_ajax_etranslation_translate_status', array( &$this, 'action_etranslation_translate_status' ) );
 	}
 
-	function action_etranslate_translate() {
-		$username = trim(get_option('etranslate_username'));
-		$password = trim(get_option('etranslate_password'));
-		$application = trim(get_option('etranslate_application'));
-		$institution = trim(get_option('etranslate_institution'));
+	function action_etranslation_translate() {
+		$username = trim(get_option('etranslation_username'));
+		$password = trim(get_option('etranslation_password'));
+		$application = trim(get_option('etranslation_application'));
+		$institution = trim(get_option('etranslation_institution'));
 		global $wpdb;
 		$this->create_plugin_database_table();
 		$strings = $_POST['to_translate'];
@@ -92,7 +92,7 @@ class eTranslate_Metabox {
 		));
 	}
 
-	function action_etranslate_translate_status() {
+	function action_etranslation_translate_status() {
 		global $wpdb;
 		$id = $_POST['id'];
 		$wp_track_table = $wpdb->prefix . $this->tblname;
@@ -145,46 +145,46 @@ class eTranslate_Metabox {
 	}
 
 	public function add_meta_box() {
-		$post_types = eTranslateConfiguration::getMetaBoxPostTypes();
+		$post_types = eTranslationConfiguration::getMetaBoxPostTypes();
 		add_meta_box(
-			'etranslate_metabox',
-			__( 'eTranslation', 'etranslate' ),
+			'etranslation_metabox',
+			__( 'eTranslation', 'etranslation' ),
 			array( &$this, 'output' ),
 			$post_types,
-			eTranslateConfiguration::getMetaBoxContext(),
-			eTranslateConfiguration::getMetaBoxPriority()
+			eTranslationConfiguration::getMetaBoxContext(),
+			eTranslationConfiguration::getMetaBoxPriority()
 		);
 	}
 
 	public function output() {
 		$html = '';
 		$html = '
-		<form id="etranslate_admin_translation" name="etranslate_admin_translation" method="POST">';
-		$html .= $this->etranslate_language_selector( 'source', 'etranslate_source_lang', false );
-		$html .= '<br />' . __( 'Translating to', 'etranslate' ) . '<br /> ';
-		$html .= $this->etranslate_language_selector( 'target', 'etranslate_target_lang', get_option( 'etranslate_default_locale' ) );
+		<form id="etranslation_admin_translation" name="etranslation_admin_translation" method="POST">';
+		$html .= $this->etranslation_language_selector( 'source', 'etranslation_source_lang', false );
+		$html .= '<br />' . __( 'Translating to', 'etranslation' ) . '<br /> ';
+		$html .= $this->etranslation_language_selector( 'target', 'etranslation_target_lang', get_option( 'etranslation_default_locale' ) );
 		$html .= '
-			<span id="etranslate_error" class="error" style="display: none;"></span>
-			<span id="etranslate_spinner" class="spinner"></span>
+			<span id="etranslation_error" class="error" style="display: none;"></span>
+			<span id="etranslation_spinner" class="spinner"></span>
 		';
 
-		$html .= wp_nonce_field( 'permission_to_translate', 'etranslate_nonce', true, false );
+		$html .= wp_nonce_field( 'permission_to_translate', 'etranslation_nonce', true, false );
 		$html .= '<br />
-			<input style="margin-top: 16px;" id="etranslate_translate" name="etranslate_translate" type="button" class="button button-primary button-large" value="' . __( 'Translate' , 'etranslate' ) . '"></span>';
+			<input style="margin-top: 16px;" id="etranslation_translate" name="etranslation_translate" type="button" class="button button-primary button-large" value="' . __( 'Translate' , 'etranslation' ) . '"></span>';
 
 		$html .= '
 			<hr />';
 
 		$html .= '
 		</form>
-		<div class="hidden_warning" style="display: none;">' . __( 'Gutenberg is not compatible with eTranslate yet. Please use Classic Editor', 'etranslate' ) . '</div>';
+		<div class="hidden_warning" style="display: none;">' . __( 'Gutenberg is not compatible with eTranslation yet. Please use Classic Editor', 'etranslation' ) . '</div>';
 
-		$html = apply_filters( 'etranslate_metabox_html', $html);
+		$html = apply_filters( 'etranslation_metabox_html', $html);
 
 		echo $html;
 	}
 
-	protected function etranslate_language_selector($type = 'target', $id = 'etranslate_language_selector', $selected = false) {
+	protected function etranslation_language_selector($type = 'target', $id = 'etranslation_language_selector', $selected = false) {
 		$html = '';
 		$html .= "\n" . '<select style="margin-top: 8px; margin-bottom: 8px;" id="' . $id . '" name="' . $id . '">';
 	

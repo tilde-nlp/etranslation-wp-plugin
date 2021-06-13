@@ -19,6 +19,6 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: Eazy Po 0.9.5.3\n"
 
-#: eTranslate.php:19
+#: eTranslation.php:19
 msgid "Settings"
 msgstr ""

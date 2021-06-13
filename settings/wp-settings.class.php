@@ -18,7 +18,7 @@ class WP_Settings {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'loadSettings' ) );
 		add_action( 'admin_init', array( $this, 'registerSettings' ) );
-		$this->plugins_paths = apply_filters( 'settings_etranslate_paths', array() );
+		$this->plugins_paths = apply_filters( 'settings_etranslation_paths', array() );
 		
 		global $wp_filter;
 		$real_order = $this->menu_order;

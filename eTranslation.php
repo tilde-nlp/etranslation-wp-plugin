@@ -46,7 +46,7 @@ function translation_destination( WP_REST_Request $request ) {
 	$id = $request['id'];
 	$body = $request->get_body();
 	
-	$wp_track_table = $wpdb->prefix . 'etranslate_jobs';
+	$wp_track_table = $wpdb->prefix . 'etranslation_jobs';
 	$wpdb->update( 
 		$wp_track_table, 
 		array( 
@@ -66,45 +66,45 @@ if (!function_exists('is_admin') || !is_admin()) {
     return;
 }
 
-defined('ETRANSLATE_PATH') or define('ETRANSLATE_PATH', realpath(__DIR__));
-defined('ETRANSLATE_URL') or define('ETRANSLATE_URL', plugins_url('', __FILE__));
+defined('ETRANSLATION_PATH') or define('ETRANSLATION_PATH', realpath(__DIR__));
+defined('ETRANSLATION_URL') or define('ETRANSLATION_URL', plugins_url('', __FILE__));
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'), false);
-defined('ETRANSLATE_VERSION') or define('ETRANSLATE_VERSION', $plugin_data['Version']);
+defined('ETRANSLATION_VERSION') or define('ETRANSLATION_VERSION', $plugin_data['Version']);
 $wp_upload_dir = wp_upload_dir();
-defined('ETRANSLATE_FILES')	or define('ETRANSLATE_FILES', trailingslashit($wp_upload_dir['basedir']) . 'etranslate');
-if (!is_dir(ETRANSLATE_FILES)) {
-    mkdir(ETRANSLATE_FILES);
+defined('ETRANSLATION_FILES')	or define('ETRANSLATION_FILES', trailingslashit($wp_upload_dir['basedir']) . 'etranslation');
+if (!is_dir(ETRANSLATION_FILES)) {
+    mkdir(ETRANSLATION_FILES);
 }
 
-function settings_etranslate_paths($paths = array()) {
+function settings_etranslation_paths($paths = array()) {
 	$paths['etranslation_settings'] = array(
-		'files'	=> ETRANSLATE_FILES
+		'files'	=> ETRANSLATION_FILES
 	);
 	return $paths;
 }
 
 try {
 	if (is_admin()) {
-        require_once( trailingslashit( ETRANSLATE_PATH ) . 'etranslate-configuration.class.php' );
+        require_once( trailingslashit( ETRANSLATION_PATH ) . 'etranslation-configuration.class.php' );
 
-        require_once( trailingslashit(ETRANSLATE_PATH) . 'includes/etranslate-plugin-install.php');
-        require_once( trailingslashit( ETRANSLATE_PATH ) . 'admin/etranslate-admin-hooks.php' );
-        require_once( trailingslashit( ETRANSLATE_PATH ) . 'admin/etranslate-metabox.class.php' );
+        require_once( trailingslashit(ETRANSLATION_PATH) . 'includes/etranslation-plugin-install.php');
+        require_once( trailingslashit( ETRANSLATION_PATH ) . 'admin/etranslation-admin-hooks.php' );
+        require_once( trailingslashit( ETRANSLATION_PATH ) . 'admin/etranslation-metabox.class.php' );
 
-        require_once( trailingslashit( ETRANSLATE_PATH ) . 'settings/wp-settings-api.class.php' );
- 		require_once( trailingslashit( ETRANSLATE_PATH ) . 'settings/wp-settings.class.php' );
- 		require_once( trailingslashit( ETRANSLATE_PATH ) . 'settings/wp-settings-etranslate.class.php' );
+        require_once( trailingslashit( ETRANSLATION_PATH ) . 'settings/wp-settings-api.class.php' );
+ 		require_once( trailingslashit( ETRANSLATION_PATH ) . 'settings/wp-settings.class.php' );
+ 		require_once( trailingslashit( ETRANSLATION_PATH ) . 'settings/wp-settings-etranslation.class.php' );
 
-		add_filter('settings_plugins_paths', 'settings_etranslate_paths'); 
+		add_filter('settings_plugins_paths', 'settings_etranslation_paths'); 
 	}
 } catch (Exception $e) {
 	if (current_user_can('manage_options')) {
 		print_r($e);
-		die(__( 'Error loading eTranslation','etranslate'));
+		die(__( 'Error loading eTranslation','etranslation'));
 	}
 }
 
-function etranslate_is_plugin_fully_configured() {
+function etranslation_is_plugin_fully_configured() {
 	$WP_Error = new WP_Error();
 
 	if( count( $WP_Error->get_error_messages() ) ) {
@@ -114,30 +114,30 @@ function etranslate_is_plugin_fully_configured() {
 }
 
 // Register settings link
-add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'etranslate_action_links' );
-function etranslate_action_links( $links ) {
+add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'etranslation_action_links' );
+function etranslation_action_links( $links ) {
     $links = array_merge( 
         array(
-            '<a href="' . esc_url( admin_url( '/options-general.php?page=etranslation_settings' ) ) . '">' . __( 'Settings', 'etranslate' ) . '</a>'
+            '<a href="' . esc_url( admin_url( '/options-general.php?page=etranslation_settings' ) ) . '">' . __( 'Settings', 'etranslation' ) . '</a>'
         ), 
         $links 
     );
     return $links;
 }
 
-register_activation_hook(__FILE__, 'etranslate_plugin_activate');
-function etranslate_plugin_activate() {
-	etranslate_install_plugin();
+register_activation_hook(__FILE__, 'etranslation_plugin_activate');
+function etranslation_plugin_activate() {
+	etranslation_install_plugin();
 }
 
-register_deactivation_hook(__FILE__, 'etranslate_plugin_deactivate');
-function etranslate_plugin_deactivate() {}
+register_deactivation_hook(__FILE__, 'etranslation_plugin_deactivate');
+function etranslation_plugin_deactivate() {}
 
-add_action( 'init', 'etranslate_init' );
-function etranslate_init() {
+add_action( 'init', 'etranslation_init' );
+function etranslation_init() {
 	if (!is_admin()) {
 		return;
 	}
 
-	load_plugin_textdomain('etranslate', false, dirname(plugin_basename( __FILE__ )) . '/languages');
+	load_plugin_textdomain('etranslation', false, dirname(plugin_basename( __FILE__ )) . '/languages');
 }

@@ -4,8 +4,8 @@ if( !class_exists( 'WP_Settings\WP_Settings' ) ) {
 	require( dirname( __FILE__ ) . '/wp-settings.class.php' );
 }
 
-class WP_Settings_eTranslate extends WP_Settings\WP_Settings {
-	public $plugin_id = 'etranslate';
+class WP_Settings_eTranslation extends WP_Settings\WP_Settings {
+	public $plugin_id = 'etranslation';
 	public $option_page = 'etranslation_settings';
 	public $menu_order = 15;
 	public $parent_menu = 'options-general.php';
@@ -13,60 +13,60 @@ class WP_Settings_eTranslate extends WP_Settings\WP_Settings {
 	public $extendedActions = array();
 
 	static function getPageTitle() {
-		return __( 'eTranslation settings', 'etranslate' );
+		return __( 'eTranslation settings', 'etranslation' );
 	}
 
 	static function getMenuTitle() {
-		return __( 'eTranslation', 'etranslate' );
+		return __( 'eTranslation', 'etranslation' );
 	}
 
 	function on_save() {
-		update_option( 'etranslate_plugin_installed', 1 );
+		update_option( 'etranslation_plugin_installed', 1 );
 	}
 
 	function getSettingsStructure() {
 		$settings = array(
 			'ids'			=> array(
-				'title'			=> __( 'Credentials', 'etranslate' ),
+				'title'			=> __( 'Credentials', 'etranslation' ),
 				'sections'		=> array()
 			),
 			'integration'	=> array(
-				'title'			=> __( 'Integration', 'etranslate' ),
+				'title'			=> __( 'Integration', 'etranslation' ),
 				'sections'		=> array()
 			)
 		);
 
 		$settings['ids']['sections']['identifiants'] = array(
-			'title'			=> __( 'eTranslation credentials', 'etranslate' ),
+			'title'			=> __( 'eTranslation credentials', 'etranslation' ),
 			'fields'	=> array(
 
 				array(
 					'id'			=> 'username',
-					'title'			=> __( 'Username', 'etranslate' ),
+					'title'			=> __( 'Username', 'etranslation' ),
 					'type'			=> 'text',
 					'css'			=> 'width: 20em;',
-					'description'	=> __( 'Please enter username', 'etranslate' )
+					'description'	=> __( 'Please enter username', 'etranslation' )
 				),
 				array(
 					'id'			=> 'password',
-					'title'			=> __( 'Password', 'etranslate' ),
+					'title'			=> __( 'Password', 'etranslation' ),
 					'type'			=> 'password',
 					'css'			=> 'width: 20em;',
-					'description'	=> __( 'Please enter password', 'etranslate' )
+					'description'	=> __( 'Please enter password', 'etranslation' )
 				),
 				array(
 					'id'			=> 'application',
-					'title'			=> __( 'Application', 'etranslate' ),
+					'title'			=> __( 'Application', 'etranslation' ),
 					'type'			=> 'text',
 					'css'			=> 'width: 20em;',
-					'description'	=> __( 'Please enter application', 'etranslate' )
+					'description'	=> __( 'Please enter application', 'etranslation' )
 				),
 				array(
 					'id'			=> 'institution',
-					'title'			=> __( 'Institution', 'etranslate' ),
+					'title'			=> __( 'Institution', 'etranslation' ),
 					'type'			=> 'text',
 					'css'			=> 'width: 20em;',
-					'description'	=> __( 'Please enter institution', 'etranslate' )
+					'description'	=> __( 'Please enter institution', 'etranslation' )
 				),
 			)
 		);
@@ -79,19 +79,19 @@ class WP_Settings_eTranslate extends WP_Settings\WP_Settings {
 		unset( $post_types['product'] );
 
 		$settings['integration']['sections']['metabox'] = array(
-			'title'			=> __( 'Metabox', 'etranslate' ),
+			'title'			=> __( 'Metabox', 'etranslation' ),
 			'fields'	=> array(
 				array(
 					'id'			=> 'metabox_post_types',
-					'title'			=> __( 'Metabox should be displayed on:', 'etranslate' ),
+					'title'			=> __( 'Metabox should be displayed on:', 'etranslation' ),
 					'type'			=> 'multiselect',
 					'options'		=> $post_types,
 					'default'		=> array( 'post', 'page', 'attachment' ),
-					'description'	=> __( 'Select which post types you want the metabox to appear on', 'etranslate' ),
+					'description'	=> __( 'Select which post types you want the metabox to appear on', 'etranslation' ),
  				),
  				array(
 					'id'			=> 'metabox_context',
-					'title'			=> __( 'Metabox context', 'etranslate' ),
+					'title'			=> __( 'Metabox context', 'etranslation' ),
 					'type'			=> 'select',
 					'options'		=> array(
 						'normal' 		=> 'normal',
@@ -99,11 +99,11 @@ class WP_Settings_eTranslate extends WP_Settings\WP_Settings {
 						 'advanced'		=> 'advanced'
 					),
 					'default'		=> 'side',
-					'description'	=> __('<a href="https://developer.wordpress.org/reference/functions/add_meta_box/">See add_meta_box function reference</a>','etranslate' ),
+					'description'	=> __('<a href="https://developer.wordpress.org/reference/functions/add_meta_box/">See add_meta_box function reference</a>','etranslation' ),
  				),
  				array(
 					'id'			=> 'metabox_priority',
-					'title'			=> __( 'Metabox priority', 'etranslate' ),
+					'title'			=> __( 'Metabox priority', 'etranslation' ),
 					'type'			=> 'select',
 					'options'		=> array(
 						'high'			=> 'high',
@@ -114,6 +114,6 @@ class WP_Settings_eTranslate extends WP_Settings\WP_Settings {
  				),
 			)
 		);
-		return apply_filters( 'etranslate_admin_configuration', $settings );
+		return apply_filters( 'etranslation_admin_configuration', $settings );
 	}
 }
