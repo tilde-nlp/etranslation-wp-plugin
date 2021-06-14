@@ -1,11 +1,8 @@
 <?php
 /**
  * Plugin Name: eTranslation
- * Plugin URI: https://www.tilde.lv
  * Description: eTranslation api realized in WP plugin to help with web page localization
  * Version: 0.0.1
- * Author: Oskars Petriks
- * Author URI: https://github.com/YourLittleHelper
  */
 
 
