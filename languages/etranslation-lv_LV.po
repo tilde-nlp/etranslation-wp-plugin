@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-14 00:18+0300\n"
-"PO-Revision-Date: 2021-05-14 00:22+0200\n"
+"POT-Creation-Date: 2021-06-15 00:54+0200\n"
+"PO-Revision-Date: 2021-06-15 00:54+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -18,6 +18,131 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: Eazy Po 0.9.5.3\n"
 
-#: eTranslation.php:19
+#: eTranslation.php:118
+msgid "Error loading eTranslation"
+msgstr ""
+
+#: eTranslation.php:136
 msgid "Settings"
 msgstr "Iestatījumi"
+
+#: admin/etranslation-metabox.class.php:108
+#: settings/wp-settings-etranslation.class.php:20
+msgid "eTranslation"
+msgstr ""
+
+#: admin/etranslation-metabox.class.php:121
+msgid "Translating to"
+msgstr ""
+
+#: admin/etranslation-metabox.class.php:130
+msgid "Translate"
+msgstr ""
+
+#: admin/etranslation-metabox.class.php:137
+msgid ""
+"Gutenberg is not compatible with eTranslation yet. Please use Classic Editor"
+msgstr ""
+
+#: settings/wp-settings-api.class.php:293
+msgid "Select all"
+msgstr ""
+
+#: settings/wp-settings-api.class.php:293
+msgid "Select none"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:16
+msgid "eTranslation settings"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:30
+msgid "Credentials"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:34
+msgid "Integration"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:40
+msgid "eTranslation credentials"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:45
+msgid "Username"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:48
+msgid "Please enter username"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:52
+msgid "Password"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:55
+msgid "Please enter password"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:59
+msgid "Application"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:62
+msgid "Please enter application"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:66
+msgid "Institution"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:69
+msgid ""
+"Please enter institution<br /><br />To get started, contact the <a title="
+"\"machine translation service desk\" href=\"mailto:help@cefat-tools-services."
+"eu\" rel=\"noopener noreferrer\">machine translation service desk</a>"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:82
+msgid "Metabox"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:86
+msgid "Metabox should be displayed on:"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:90
+msgid "Select which post types you want the metabox to appear on"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:94
+msgid "Metabox context"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:102
+msgid ""
+"<a href=\"https://developer.wordpress.org/reference/functions/add_meta_box/"
+"\">See add_meta_box function reference</a>"
+msgstr ""
+
+#: settings/wp-settings-etranslation.class.php:106
+msgid "Metabox priority"
+msgstr ""
+
+#: settings/wp-settings.class.php:91
+msgid "Settings saved."
+msgstr ""
+
+#: settings/wp-settings.class.php:134 settings/wp-settings.class.php:376
+#, php-format
+msgid "Attention, function is not defined %s"
+msgstr ""
+
+#: settings/wp-settings.class.php:325
+#, php-format
+msgid "Attention, fonction non définie %s"
+msgstr ""
+
+#: settings/wp-settings.class.php:336
+msgid "Update"
+msgstr ""
