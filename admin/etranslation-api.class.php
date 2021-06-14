@@ -1,5 +1,4 @@
 <?php
-
 class eTranslation_API {
     protected $username;
     protected $password;
@@ -68,7 +67,7 @@ class eTranslation_API {
 		-90014 => 'Cannot store file at specified FTP address',
 		-90015 => 'Cannot retrieve file content on SFTP',
 		-90016 => 'Cannot retrieve file at specified SFTP address'
-	);	
+    );
 
     function __construct($username, $password, $application, $institution) {
         $this->username = $username;
@@ -78,27 +77,29 @@ class eTranslation_API {
     }
 
     public static function get_error($code) {
-        return self::$error_map[intval($code)];
+        return self::$error_map[intval($code) ];
     }
 
     public function translate_as_file($source_lang, $target_lang, $content, $destination, $error_callback) {
         $caller_information = array(
             'application' => $this->application,
-			'username' => $this->username,
-			'institution' => $this->institution
+            'username' => $this->username,
+            'institution' => $this->institution
         );
 
-        $translationRequest= array(
-			'documentToTranslateBase64' => $this->string_to_base64_data($content),
+        $translationRequest = array(
+            'documentToTranslateBase64' => $this->string_to_base64_data($content) ,
             'sourceLanguage' => $source_lang,
             'targetLanguages' => array(
                 $target_lang
-            ),
+            ) ,
             'errorCallback' => $error_callback,
             'callerInformation' => $caller_information,
-			'destinations' =>  array(
-				'httpDestinations' => array($destination)
-			)
+            'destinations' => array(
+                'httpDestinations' => array(
+                    $destination
+                )
+            )
         );
 
         $postData = json_encode($translationRequest);
@@ -107,33 +108,34 @@ class eTranslation_API {
 
     private function string_to_base64_data($string) {
         $base64_string = base64_encode($string);
-		$base64_to_translate = array(
-			"content" => $base64_string,
-			"format" => "html",
-			"filename" => "translateMe"
-		);
+        $base64_to_translate = array(
+            "content" => $base64_string,
+            "format" => "html",
+            "filename" => "translateMe"
+        );
 
         return $base64_to_translate;
     }
 
     private function POST($postData) {
         $client = curl_init();
-		
-		curl_setopt($client, CURLOPT_URL, "https://webgate.ec.europa.eu/etranslation/si/translate");
-		curl_setopt($client, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($client, CURLOPT_POST, 1);
-		curl_setopt($client, CURLOPT_POSTFIELDS, $postData);
-		curl_setopt($client, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-		curl_setopt($client, CURLOPT_USERPWD, $this->application . ":" . $this->password);
-		curl_setopt($client, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($client, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($client, CURLOPT_TIMEOUT, 30);
-	
-		curl_setopt($client, CURLOPT_HTTPHEADER, array(
-			'Content-Type: application/json',
-			'Content-Length: ' . strlen($postData)
-		));
-	
-		return curl_exec($client);
+
+        curl_setopt($client, CURLOPT_URL, "https://webgate.ec.europa.eu/etranslation/si/translate");
+        curl_setopt($client, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($client, CURLOPT_POST, 1);
+        curl_setopt($client, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($client, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+        curl_setopt($client, CURLOPT_USERPWD, $this->application . ":" . $this->password);
+        curl_setopt($client, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($client, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($client, CURLOPT_TIMEOUT, 30);
+
+        curl_setopt($client, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($postData)
+        ));
+
+        return curl_exec($client);
     }
 }
+

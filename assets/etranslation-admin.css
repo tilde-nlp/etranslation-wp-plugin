@@ -1,40 +1,47 @@
 #etranslation-form .form-table table th {
- width: 300px;
+	width: 300px;
 	padding: 1px 5px;
 	vertical-align: top;
 }
-#etranslation-form .form-table td{
- vertical-align: top;
+
+#etranslation-form .form-table td {
+	vertical-align: top;
 }
-#etranslation-form .form-table td:first-child{
- width: 150px;
+
+#etranslation-form .form-table td:first-child {
+	width: 150px;
 }
-#etranslation-form .form-table table td{
+
+#etranslation-form .form-table table td {
 	padding: 1px 5px;
 }
-#etranslation-form .form-table table .select_all_rules_row td{
- padding-bottom: 15px;
+
+#etranslation-form .form-table table .select_all_rules_row td {
+	padding-bottom: 15px;
 }
 
-.language_selection{
-	float:right;
+.language_selection {
+	float: right;
 }
-.language_selection label{
+
+.language_selection label {
 	margin-right: 5px;
 }
-.translation_button{
-	display:block;
+
+.translation_button {
+	display: block;
 }
 
-#etranslation_box .spinner{
+#etranslation_box .spinner {
 	margin-top: 6px;
 	float: none;
 }
-#etranslation_translation{
+
+#etranslation_translation {
 	float: left;
 }
 
-#etranslation_support a:hover{
-	padding-left:6px;
-	opacity:0.9
+#etranslation_support a:hover {
+	padding-left: 6px;
+	opacity: 0.9;
 }
