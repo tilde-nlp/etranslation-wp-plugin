@@ -62,7 +62,6 @@ function replace_translations(translations) {
 					jQuery('#content.wp-editor-area').val(new_value);
 				}
 			} else {
-				new_value = new_value.replace
 				jQuery('#content_ifr').contents().find('#tinymce').html(new_value);
 			}
 		} else if(index.substr(0, 3) == 'acf') {
