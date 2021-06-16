@@ -5,10 +5,6 @@ function etranslation_init_admin() {
         return;
     }
 
-    if (eTranslationConfiguration::isPluginInstalled() === false) {
-        etranslation_install_plugin();
-    }
-
     global $WP_Settings_eTranslation;
 
     if (!$WP_Settings_eTranslation) {

@@ -1,8 +1,5 @@
 <?php
 function etranslation_install_plugin() {
-    if (!get_option('etranslation_plugin_installed')) {
-        update_option('etranslation_plugin_installed', 0);
-    }
     if (!get_option('etranslation_metabox_post_types')) {
         update_option('etranslation_metabox_post_types', array(
             'post',
@@ -38,9 +35,6 @@ function create_plugin_database_table() {
 }
 
 function etranslation_uninstall_plugin() {
-    if (get_option('etranslation_plugin_installed')) {
-        delete_option('etranslation_plugin_installed');
-    }
     if (get_option('etranslation_metabox_post_types')) {
         delete_option('etranslation_metabox_post_types');
     }

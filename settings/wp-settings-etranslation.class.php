@@ -14,10 +14,6 @@ class WP_Settings_eTranslation extends WP_Settings\WP_Settings {
         return __('eTranslation', 'etranslation');
     }
 
-    function on_save() {
-        update_option('etranslation_plugin_installed', 1);
-    }
-
     function getSettingsStructure() {
         $settings = array(
             'ids' => array(
