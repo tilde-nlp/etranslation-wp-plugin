@@ -4,8 +4,6 @@ namespace WP_Settings;
 if (!class_exists('WP_Settings\WP_Settings')) {
     class WP_Settings {
         public $settingsStructure = array();
-        public $defaultActions = array();
-        public $extendedActions = array();
 
         public $plugin_id;
         public $menu_order = 20;
@@ -129,30 +127,8 @@ if (!class_exists('WP_Settings\WP_Settings')) {
             // Get current tab
             $current_tab = (isset($_GET['tab'])) ? $_GET['tab'] : $this->defaultSettingsTab;
 
-            // Print header
             $this->printHeader();
-
             $this->printFields();
-
-            $possibleActions = array_merge($this->defaultActions, $this->extendedActions);
-
-            if (count($possibleActions)) foreach ($possibleActions as $action => $function) {
-                if (isset($_REQUEST[$action])) {
-                    if (is_array($function)) {
-                        list($object, $method) = $function;
-                        if (method_exists($object, $method)) {
-                            $object->$method();
-                        }
-
-                    }
-                    elseif (function_exists($function)) {
-                        $function();
-                    }
-                    else {
-                        printf(__('Attention, function is not defined %s', 'etranslation') , $function);
-                    }
-                }
-            }
             $this->printFooter();
         }
 

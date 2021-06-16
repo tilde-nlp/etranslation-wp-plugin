@@ -5,7 +5,6 @@ class WP_Settings_eTranslation extends WP_Settings\WP_Settings {
     public $menu_order = 15;
     public $parent_menu = 'options-general.php';
     public $defaultSettingsTab = 'ids';
-    public $extendedActions = array();
 
     static function getPageTitle() {
         return __('eTranslation settings', 'etranslation');
