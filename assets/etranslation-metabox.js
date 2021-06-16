@@ -22,13 +22,13 @@ function unEscapeHTMLTags(string) {
 }
 
 function replace_translations(translations) {
-	var is_gutenberg = jQuery('.wp-block').length;
+	var is_gutenberg_editor = jQuery('.wp-block').length;
 	var is_classic_editor = jQuery('.wp-editor-area').length;
 	jQuery.each(translations, function(index, value) {
 		var original_translation = value;
 		if(index == 'post_title') {
 			var new_value = value.replace(/\\( . )/mg, "$1")
-			if(is_gutenberg) {
+			if(is_gutenberg_editor) {
 				wp.data.dispatch('core/editor').editPost({
 					title: new_value
 				})
@@ -37,7 +37,7 @@ function replace_translations(translations) {
 			}
 		} else if(index == 'post_excerpt') {
 			var new_value = value.replace(/\\( . )/mg, "$1")
-			if(is_gutenberg) {
+			if(is_gutenberg_editor) {
 				wp.data.dispatch('core/editor').editPost({
 					excerpt: new_value
 				})
@@ -46,7 +46,7 @@ function replace_translations(translations) {
 			}
 		} else if(index == 'post_content') {
 			var new_value = value.replace(/\\( . )/mg, "$1")
-			if(is_gutenberg) {
+			if(is_gutenberg_editor) {
 				var fixed_translation = original_translation;
 				fixed_translation = unEscapeHTMLTags(fixed_translation);
 				wp.data.dispatch('core/block-editor').resetBlocks(wp.blocks.parse(fixed_translation));
@@ -108,9 +108,9 @@ jQuery(document).ready(function() {
 	}
 	jQuery("#etranslation_translate").on("click", function() {
 		hideError();
-		var is_gutenberg = jQuery('.wp-block').length;
+		var is_gutenberg_editor = jQuery('.wp-block').length;
 		var is_classic_editor = jQuery('.wp-editor-area').length;
-		if(is_gutenberg) {
+		if(is_gutenberg_editor) {
 			console.log("is gutenberg");
 			is_classic_editor = false;
 		}
@@ -118,7 +118,7 @@ jQuery(document).ready(function() {
 		jQuery('#etranslation_spinner').css('visibility', 'visible');
 		var target_lang = jQuery('#etranslation_target_lang').val();
 		var text_bits = {};
-		if(is_gutenberg) {
+		if(is_gutenberg_editor) {
 			const {
 				select
 			} = wp.data;
