@@ -1,13 +1,13 @@
 function showError(message) {
 	jQuery('#etranslation_spinner').css('visibility', 'hidden');
 	jQuery('#etranslation_error_message').html(message);
-	jQuery('#etranslation_error_message').css('display', 'block');
+	jQuery('#etranslation_error_message').show();
 	jQuery('#etranslation_error_message').css('color', 'red');
 }
 
 function hideError() {
 	jQuery('#etranslation_error_message').html('');
-	jQuery('#etranslation_error_message').css('display', 'hidden');
+	jQuery('#etranslation_error_message').hide();
 }
 
 function unEscapeHTMLTags(string) {
