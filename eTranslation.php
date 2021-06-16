@@ -3,6 +3,7 @@
  * Plugin Name: eTranslation
  * Description: eTranslation api realized in WP plugin to help with web page localization
  * Version: 0.0.1
+ * License: LGPL v3
  */
 
 // Register callback methods for eTranslation
