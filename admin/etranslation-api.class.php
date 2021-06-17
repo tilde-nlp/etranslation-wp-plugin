@@ -77,7 +77,10 @@ class eTranslation_API {
     }
 
     public static function get_error($code) {
-        return self::$error_map[intval($code) ];
+        if (self::$error_map[intval($code)]) {
+            return self::$error_map[intval($code)];
+        }
+        return __('Unexpected error, please try again.', 'etranslation');
     }
 
     public function translate_as_file($source_lang, $target_lang, $content, $destination, $error_callback) {
@@ -135,7 +138,10 @@ class eTranslation_API {
             'Content-Length: ' . strlen($postData)
         ));
 
-        return curl_exec($client);
+        $response = curl_exec($client);
+        error_log(print_r($response, true));
+        return $response;
+        // return curl_exec($client);
     }
 }
 
