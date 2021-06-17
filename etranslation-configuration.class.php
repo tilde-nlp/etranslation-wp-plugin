@@ -11,9 +11,5 @@ class eTranslationConfiguration {
     static function getMetaBoxPriority() {
         return apply_filters(__METHOD__, get_option('etranslation_metabox_priority'));
     }
-
-    static function isPluginInstalled() {
-        return get_option('etranslation_plugin_installed');
-    }
 }
 
